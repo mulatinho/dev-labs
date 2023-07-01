@@ -1,0 +1,11 @@
+clean:
+	rm -fv tasks *~ *.swp
+
+build:
+	go build
+
+image:
+	docker build -t tasks:latest .
+
+run:
+	docker run -p 8181:8181 tasks:latest
