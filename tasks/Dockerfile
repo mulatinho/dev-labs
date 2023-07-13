@@ -7,4 +7,6 @@ COPY . .
 RUN go get
 RUN go build
 
+EXPOSE 8181
+
 ENTRYPOINT ["/app/tasks"]
