@@ -25,6 +25,7 @@ jobs:
       - name: tests
         run: |
           cd tasks
+          make build
           make tests
 
       - name: create image and push
