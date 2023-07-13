@@ -2,6 +2,7 @@ clean:
 	rm -fv tasks *~ *.swp
 
 build:
+	go get
 	go build
 
 image:
