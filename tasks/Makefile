@@ -7,6 +7,10 @@ build:
 image:
 	docker build -t tasks:latest .
 
+push:
+	docker tag tasks:latest mulatinho/tasks:latest
+	docker push mulatinho/tasks:latest
+
 run:
 	docker run -p 8181:8181 tasks:latest
 
