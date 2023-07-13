@@ -46,7 +46,7 @@ func postTasks(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"count": len(tasks)})
 }
 
-func main() {
+func setupRouter() *gin.Engine {
 	app := gin.Default()
 
 	fmt.Println(":. mulato labs: gin crud lab01")
@@ -55,5 +55,10 @@ func main() {
 	app.GET("/tasks/:id", getTaskById)
 	app.POST("/tasks", postTasks)
 
-	app.Run(":8181")
+	return app
+}
+
+func main() {
+	router := setupRouter()
+	router.Run(":8181")
 }

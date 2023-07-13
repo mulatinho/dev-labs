@@ -9,3 +9,6 @@ image:
 
 run:
 	docker run -p 8181:8181 tasks:latest
+
+tests:
+	GIN_MODE=debug go test
