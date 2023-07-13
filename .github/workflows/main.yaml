@@ -5,7 +5,7 @@ on:
       - master
 
 jobs:
-  login:
+  build-task:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,9 +15,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-  build-task:
-    runs-on: ubuntu-latest
-    steps:
       - name: build project and image
         run: |
           cd tasks
