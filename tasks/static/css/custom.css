@@ -1,0 +1,23 @@
+.terrain {
+    background: url("/static/img/tileset-terrain.png") no-repeat;
+}
+.s00 { width: 64px; height: 64px; background-position: -000px 0px; }
+.s01 { width: 64px; height: 64px; background-position: -064px 0px; }
+.s02 { width: 64px; height: 64px; background-position: -128px 0px; }
+.s03 { width: 64px; height: 64px; background-position: -196px 0px; }
+.s04 { width: 64px; height: 64px; background-position: -256px 0px; }
+.s05 { width: 64px; height: 64px; background-position: -320px 0px; }
+.s06 { width: 64px; height: 64px; background-position: -384px 0px; }
+.s07 { width: 64px; height: 64px; background-position: -448px 0px; }
+.s08 { width: 64px; height: 64px; background-position: -512px 0px; }
+.s09 { width: 64px; height: 64px; background-position: -576px 0px; }
+
+.s10 { width: 64px; height: 64px; background-position: 0 -064px; }
+.s20 { width: 64px; height: 64px; background-position: 0 -128px; }
+.s30 { width: 64px; height: 64px; background-position: 0 -196px; }
+.s40 { width: 64px; height: 64px; background-position: 0 -256px; }
+.s50 { width: 64px; height: 64px; background-position: 0 -320px; }
+.s60 { width: 64px; height: 64px; background-position: 0 -384px; }
+.s70 { width: 64px; height: 64px; background-position: 0 -448px; }
+.s80 { width: 64px; height: 64px; background-position: 0 -512px; }
+.s90 { width: 64px; height: 64px; background-position: 0 -576px; }
