@@ -3,7 +3,7 @@ FROM golang:1.19 as build
 WORKDIR /app
 COPY . .
 RUN go get
-RUN go build
+RUN go build -o ./tasks cmd/main.go
 
 FROM alpine:3.18.2
 COPY --from=build /app/tasks /app/tasks
