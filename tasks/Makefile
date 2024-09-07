@@ -2,8 +2,8 @@ clean:
 	rm -fv tasks *~ *.swp
 
 build:
-	go get
-	go build
+	go get ./...
+	go build -o ./tasks cmd/main.go
 
 image:
 	docker build -t tasks:latest .
