@@ -1,10 +1,13 @@
 package models
 
-import "log"
+import (
+	"fmt"
+	"log"
+)
 
 type Task struct {
-	id   int    `json:"id" `
-	name string `json:"name" validate:"required"`
+	id   int    //`json:"id" `
+	name string //`json:"name" validate:"required"`
 }
 
 func GetAllTasks() []Task {
@@ -27,8 +30,8 @@ func GetAllTasks() []Task {
 	return tasks
 }
 
-func GetTaskById(id int) Task {
-	var task Task
+func GetTaskById(id string) []Task {
+	var tasks []Task
 
 	rows, err := db.Query("SELECT id, name FROM tasks WHERE id = ?", id)
 	if err != nil {
@@ -42,7 +45,9 @@ func GetTaskById(id int) Task {
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Println(task)
+		tasks = append(tasks, task)
 	}
 
-	return task
+	return tasks
 }

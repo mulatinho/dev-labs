@@ -17,7 +17,19 @@ func GetIndex(ctx *gin.Context) {
 }
 
 func GetTasks(ctx *gin.Context) {
+	fmt.Println("GET /tasks")
 	tasks := models.GetAllTasks()
+	ctx.HTML(http.StatusOK, "task.html", gin.H{
+		"title":   "GoLabs Mulatinho: Tasks",
+		"tasks":   tasks,
+		"visible": "d-none",
+	})
+}
+
+func GetTaskById(ctx *gin.Context) {
+	id := ctx.Param("name")
+	fmt.Println("GET /tasks/:id", id)
+	tasks := models.GetTaskById(id)
 	ctx.HTML(http.StatusOK, "task.html", gin.H{
 		"title":   "GoLabs Mulatinho: Tasks",
 		"tasks":   tasks,
@@ -33,4 +45,21 @@ func PostTask(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"status": "OK"})
+}
+
+func SetupRouter() *gin.Engine {
+	r := gin.Default()
+	r.LoadHTMLGlob("./templates/**")
+	r.Static("/static", "./static")
+
+	// Initialize the database
+	models.InitDB()
+
+	// Define routes
+	r.GET("/", GetIndex)
+	r.GET("/tasks", GetTasks)
+	r.GET("/tasks/:id", GetTaskById)
+	r.POST("/tasks", PostTask)
+
+	return r
 }

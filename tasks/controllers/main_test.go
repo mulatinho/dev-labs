@@ -5,11 +5,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/mulatinho/golabs/tasks/controllers"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetTasksRoute(t *testing.T) {
-	router := SetupRouter()
+	router := controllers.SetupRouter()
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/tasks", nil)
@@ -19,7 +20,7 @@ func TestGetTasksRoute(t *testing.T) {
 }
 
 func TestGetTasksByIdRoute(t *testing.T) {
-	router := SetupRouter()
+	router := controllers.SetupRouter()
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/tasks/0", nil)

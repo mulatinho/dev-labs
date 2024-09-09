@@ -5,7 +5,7 @@
         <h2 class="mb-3">Task List</h4>
         <ul>
             {{ range .tasks }}
-            <li>ID: {{ .id }} - Task: {{ .Name }}</li>
+            <li>ID: {{ .id }} - Task: {{ .name }}</li>
             {{ else }}
             <li>No tasks found</li>
             {{ end }}
