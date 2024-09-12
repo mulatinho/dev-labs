@@ -1,4 +1,4 @@
-package models
+package core
 
 import (
 	"fmt"
@@ -6,12 +6,12 @@ import (
 )
 
 type Task struct {
-	id   int    //`json:"id" `
-	name string //`json:"name" validate:"required"`
+	ID   int    `json:"id" validate:"required"`
+	Name string `json:"name" validate:"required"`
 }
 
-func GetAllTasks() []Task {
-	rows, err := db.Query("SELECT id, name FROM tasks")
+func QueryAllTasks() []Task {
+	rows, err := taskApp.db.Query("SELECT id, name FROM tasks")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -20,20 +20,20 @@ func GetAllTasks() []Task {
 	var tasks []Task
 	for rows.Next() {
 		var task Task
-		err := rows.Scan(&task.id, &task.name)
+		err := rows.Scan(&task.ID, &task.Name)
 		if err != nil {
 			log.Fatal(err)
 		}
 		tasks = append(tasks, task)
 	}
 
+	taskApp.log.Println(tasks)
 	return tasks
 }
 
-func GetTaskById(id string) []Task {
+func QueryTaskById(id string) []Task {
 	var tasks []Task
-
-	rows, err := db.Query("SELECT id, name FROM tasks WHERE id = ?", id)
+	rows, err := taskApp.db.Query("SELECT id, name FROM tasks WHERE id = ?", id)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,7 +41,7 @@ func GetTaskById(id string) []Task {
 
 	for rows.Next() {
 		var task Task
-		err := rows.Scan(&task.id, &task.name)
+		err := rows.Scan(&task.ID, &task.Name)
 		if err != nil {
 			log.Fatal(err)
 		}

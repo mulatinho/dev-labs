@@ -1,16 +1,18 @@
 package cmd
 
 import (
-	"fmt"
+	"flag"
+	"os"
 
-	"github.com/mulatinho/golabs/tasks/controllers"
+	"github.com/mulatinho/golabs/tasks/core"
 )
 
 func Start() {
-	// Initialize the routes
-	r := controllers.SetupRouter()
+	useDebug := flag.Bool("debug", false, "display debug messages in output")
 
-	// Start the server
-	fmt.Println(":. starting server on port 8181..")
-	r.Run(":8181")
+	if *useDebug {
+		os.Setenv("DEBUG", "true")
+	}
+
+	core.Start()
 }

@@ -1,0 +1,96 @@
+package core
+
+import (
+	"database/sql"
+	"fmt"
+	"log"
+	"os"
+	"sync"
+
+	"github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
+)
+
+const (
+	Name    = "golabs/mulatinho"
+	Version = "1.0"
+	Port    = "8181"
+	FQDN    = "http://localhost:" + Port
+	Banner  = `
+ ________  ________  ___       ________  ________  ________                                     
+|\   ____\|\   __  \|\  \     |\   __  \|\   __  \|\   ____\                                    
+\ \  \___|\ \  \|\  \ \  \    \ \  \|\  \ \  \|\ /\ \  \___|_                                   
+ \ \  \  __\ \  \\\  \ \  \    \ \   __  \ \   __  \ \_____  \                                  
+  \ \  \|\  \ \  \\\  \ \  \____\ \  \ \  \ \  \|\  \|____|\  \                                 
+   \ \_______\ \_______\ \_______\ \__\ \__\ \_______\____\_\  \                                
+    \|_______|\|_______|\|_______|\|__|\|__|\|_______|\_________\                               
+                                                     \|_________|                               
+                                                                                                
+                                                                                                
+ _____ ______   ___  ___  ___       ________  _________  ___  ________   ___  ___  ________     
+|\   _ \  _   \|\  \|\  \|\  \     |\   __  \|\___   ___\\  \|\   ___  \|\  \|\  \|\   __  \    
+\ \  \\\__\ \  \ \  \\\  \ \  \    \ \  \|\  \|___ \  \_\ \  \ \  \\ \  \ \  \\\  \ \  \|\  \   
+ \ \  \\|__| \  \ \  \\\  \ \  \    \ \   __  \   \ \  \ \ \  \ \  \\ \  \ \   __  \ \  \\\  \  
+  \ \  \    \ \  \ \  \\\  \ \  \____\ \  \ \  \   \ \  \ \ \  \ \  \\ \  \ \  \ \  \ \  \\\  \ 
+   \ \__\    \ \__\ \_______\ \_______\ \__\ \__\   \ \__\ \ \__\ \__\\ \__\ \__\ \__\ \_______\
+    \|__|     \|__|\|_______|\|_______|\|__|\|__|    \|__|  \|__|\|__| \|__|\|__|\|__|\|_______|
+
+`
+	URL_API_TASKS = FQDN + API_PREFIX + "/tasks"
+)
+
+type TaskApp struct {
+	db  *sql.DB
+	log *log.Logger
+	gin *gin.Engine
+}
+
+var taskApp TaskApp
+
+func InitDB() *sql.DB {
+	db, err := sql.Open("sqlite3", "/tmp/data.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	createTable := `CREATE TABLE IF NOT EXISTS tasks (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT
+	);
+	
+	INSERT OR REPLACE INTO tasks (id, name) VALUES (0, 'This is my first Task example for Tests :)');`
+
+	_, err = db.Exec(createTable)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return db
+}
+
+func SetupRouter() {
+	var lock = &sync.Mutex{}
+	lock.Lock()
+	defer lock.Unlock()
+
+	fmt.Println("HEEEEEEEEEEEEEEEY ", taskApp == TaskApp{})
+	if (TaskApp{}) == taskApp {
+		taskApp = TaskApp{
+			db:  InitDB(),
+			gin: gin.Default(),
+			log: log.New(os.Stdout, ":. ", log.LstdFlags|log.Lshortfile),
+		}
+
+		SetupViews(taskApp.gin)
+		SetupAPIs(taskApp.gin)
+	}
+
+	fmt.Println("HEEEEEEEEEEEEEEEY ", taskApp == TaskApp{})
+}
+
+func Start() {
+	gin.SetMode(gin.DebugMode)
+	SetupRouter()
+	taskApp.log.Println(":. starting server on port ", Port)
+	taskApp.gin.Run(":" + Port)
+}
