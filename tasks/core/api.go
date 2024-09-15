@@ -36,6 +36,7 @@ type APIResponse struct {
 	Tasks   []Task `json:"tasks"`
 }
 
+// GetTasks retrieves a JSON of []Task's
 func GetTasks(ctx *gin.Context) {
 	taskApp.log.Println("GET ", API_PREFIX+"/tasks")
 	tasks := QueryAllTasks()
@@ -47,6 +48,7 @@ func GetTasks(ctx *gin.Context) {
 	})
 }
 
+// GetTaskById retrieves a JSON of []Task's containing the specific ID
 func GetTaskById(ctx *gin.Context) {
 	id := ctx.Param("name")
 	taskApp.log.Println("GET ", API_PREFIX+"/tasks/"+id)

@@ -59,6 +59,14 @@ const (
 	URL_API_TASKS = FQDN + API_PREFIX + "/tasks"
 )
 
+// Task represents a task in the task management system.
+// It contains all necessary information about the task,
+// including its ID, name, and status.
+//
+// Fields:
+//   - ID: A unique identifier for the task.
+//   - Name: The name of the task.
+//   - Status: The current status of the task (e.g., pending, completed).
 type TaskApp struct {
 	db  *sql.DB
 	log *log.Logger

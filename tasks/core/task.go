@@ -29,6 +29,10 @@ type Task struct {
 	Name string `json:"name" validate:"required"`
 }
 
+// QueryAllTasks retrieves an array of tasks.
+//
+// Returns:
+//   - []Task: An array of task objects
 func QueryAllTasks() []Task {
 	rows, err := taskApp.db.Query("SELECT id, name FROM tasks")
 	if err != nil {
@@ -50,6 +54,13 @@ func QueryAllTasks() []Task {
 	return tasks
 }
 
+// QueryTaskById retrieves a task by its ID.
+//
+// Parameters:
+//   - id: The unique identifier of the task to retrieve.
+//
+// Returns:
+//   - []Task: The task object specified by ID inside of an array of them.
 func QueryTaskById(id string) []Task {
 	var tasks []Task
 	rows, err := taskApp.db.Query("SELECT id, name FROM tasks WHERE id = ?", id)

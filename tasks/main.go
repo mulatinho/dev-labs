@@ -17,6 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// Package tasks provides a collection of functions and types
+// for managing and executing various tasks.
+//
+// The package includes functionality for task creation, execution,
+// and management, and is designed to be flexible and extensible.
 package main
 
 import (
