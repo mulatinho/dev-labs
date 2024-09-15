@@ -84,7 +84,6 @@ func SetupViews(router *gin.Engine) {
 		}
 	}
 
-	fmt.Println(templateDir, staticDir)
 	router.LoadHTMLGlob(templateDir)
 	router.Static("/static", staticDir)
 
