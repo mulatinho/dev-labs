@@ -4,7 +4,8 @@ on:
     branches:
       - master
     paths:
-      - 'golabs/**'
+      - 'tasks/**'
+      - '.github/workflows/**'
 
 jobs:
   build-task:
