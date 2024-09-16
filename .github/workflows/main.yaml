@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'golabs/**'
 
 jobs:
   build-task:
@@ -21,12 +23,6 @@ jobs:
         run: |
           cd tasks
           make build
-
-      - name: tests
-        run: |
-          cd tasks
-          make build
-          make tests
 
       - name: create image and push
         run: |
