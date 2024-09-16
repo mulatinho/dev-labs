@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -52,8 +53,21 @@ func PageViewTaskById(ctx *gin.Context) {
 }
 
 func SetupViews(router *gin.Engine) {
-	router.LoadHTMLGlob("templates/**")
-	router.Static("/static", "./static")
+	possibleDirs := []string{"/../core", "/core", "./core"}
+	var coreDir, templateDir, staticDir string
+
+	for _, checkDir := range possibleDirs {
+		coreDir = os.Getenv("PWD") + checkDir
+		templateDir = coreDir + "/templates/**"
+		staticDir = coreDir + "/static"
+		if _, err := os.Stat(coreDir); err == nil {
+			break
+		}
+	}
+
+	fmt.Println(templateDir, staticDir)
+	router.LoadHTMLGlob(templateDir)
+	router.Static("/static", staticDir)
 
 	router.GET("/", PageViewIndex)
 	router.GET("/tasks", PageViewTasks)

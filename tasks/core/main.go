@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -45,7 +46,7 @@ type TaskApp struct {
 	gin *gin.Engine
 }
 
-var taskApp TaskApp
+var taskApp *TaskApp
 
 func InitDB() *sql.DB {
 	db, err := sql.Open("sqlite3", "/tmp/data.db")
@@ -73,9 +74,9 @@ func SetupRouter() {
 	lock.Lock()
 	defer lock.Unlock()
 
-	fmt.Println("HEEEEEEEEEEEEEEEY ", taskApp == TaskApp{})
-	if (TaskApp{}) == taskApp {
-		taskApp = TaskApp{
+	fmt.Println("HEEEEEEEEEEEEEEEY ", reflect.ValueOf(taskApp).IsNil())
+	if reflect.ValueOf(taskApp).IsNil() {
+		taskApp = &TaskApp{
 			db:  InitDB(),
 			gin: gin.Default(),
 			log: log.New(os.Stdout, ":. ", log.LstdFlags|log.Lshortfile),
@@ -85,12 +86,14 @@ func SetupRouter() {
 		SetupAPIs(taskApp.gin)
 	}
 
-	fmt.Println("HEEEEEEEEEEEEEEEY ", taskApp == TaskApp{})
+	fmt.Println("HOOOOOOOOOOOOOOOY ", reflect.ValueOf(taskApp).IsNil())
 }
 
 func Start() {
 	gin.SetMode(gin.DebugMode)
 	SetupRouter()
+	fmt.Println("HOOOOOOOOOOOOOOOY ", reflect.ValueOf(taskApp).IsNil())
+	fmt.Println("HUUUUUUUUUUUUUUUY ", reflect.ValueOf(taskApp.log).IsNil())
 	taskApp.log.Println(":. starting server on port ", Port)
 	taskApp.gin.Run(":" + Port)
 }
