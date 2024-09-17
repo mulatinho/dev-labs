@@ -1,3 +1,5 @@
+all: build
+
 clean:
 	rm -fv tasks data.db *~ *.swp
 

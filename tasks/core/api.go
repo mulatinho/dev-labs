@@ -36,6 +36,14 @@ type APIResponse struct {
 	Tasks   []Task `json:"tasks"`
 }
 
+// GetHealthCheck retrieves a 200 OK response to inform system is answering
+func GetHealthCheck(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"status":  200,
+		"message": "healthcheck succesfully triggered.",
+	})
+}
+
 // GetTasks retrieves a JSON of []Task's
 func GetTasks(ctx *gin.Context) {
 	taskApp.log.Println("GET ", API_PREFIX+"/tasks")
@@ -74,6 +82,8 @@ func PostTask(ctx *gin.Context) {
 func SetupAPIs(router *gin.Engine) {
 
 	v1 := router.Group(API_PREFIX)
+
+	v1.GET("/health", GetHealthCheck)
 
 	v1.GET("/tasks", GetTasks)
 	v1.GET("/tasks/:id", GetTaskById)
