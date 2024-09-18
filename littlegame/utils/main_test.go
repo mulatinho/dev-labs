@@ -3,11 +3,13 @@ package utils
 import (
 	"strings"
 	"testing"
+
+	_ "github.com/mulatinho/golabs/mlt"
 )
 
 func TestGetManName(t *testing.T) {
 	manName := GetManName()
-	mlt.assert(t, manName != "")
+	assert(t, manName != "")
 }
 
 func TestGetWomanName(t *testing.T) {
