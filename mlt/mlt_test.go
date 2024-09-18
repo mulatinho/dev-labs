@@ -30,18 +30,18 @@ var arrayOfStrings = []string{
 }
 
 func TestAssertFunction(t *testing.T) {
-	assert(t, 1 != 2)
-	assert(t, 20%2 == 0)
-	assert(t, 21%2 != 0)
+	Assert(t, 1 != 2)
+	Assert(t, 20%2 == 0)
+	Assert(t, 21%2 != 0)
 }
 
 func TestEqualsFunction(t *testing.T) {
-	equals(t, arrayOfInts[0:1], arrayOfInts[:1])
-	equals(t, arrayOfStrings[0:1], arrayOfStrings[:1])
-	equals(t, 10000, 10_000)
+	Equals(t, arrayOfInts[0:1], arrayOfInts[:1])
+	Equals(t, arrayOfStrings[0:1], arrayOfStrings[:1])
+	Equals(t, 10000, 10_000)
 }
 
 func TestStringEqualsFunction(t *testing.T) {
-	stringEquals(t, arrayOfStrings[0], "one")
-	stringEquals(t, arrayOfStrings[2], arrayOfStrings[5])
+	StringEquals(t, arrayOfStrings[0], "one")
+	StringEquals(t, arrayOfStrings[2], arrayOfStrings[5])
 }

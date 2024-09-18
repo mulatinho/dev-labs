@@ -16,7 +16,7 @@ push:
 	docker push mulatinho/littlegame:latest
 
 run:
-	docker run -p 8181:8181 littlegame:latest
+	docker run littlegame:latest
 
 tests:
-	GIN_MODE=debug go test ./...
+	go test ./...
