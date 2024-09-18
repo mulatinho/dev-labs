@@ -1,5 +1,5 @@
 /*
- * The inspect testing library.
+ * The Mulato Library of Tests (MLT).
  *
  * Copyright (C) 2024 Alexandre Mulatinho <alex@mulatinho.net>
  *
@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package inspect
+package mlt
 
 import (
 	"testing"

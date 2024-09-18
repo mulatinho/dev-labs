@@ -4,11 +4,11 @@ on:
     branches:
       - master
     paths:
-      - 'inspect/**'
-      - '.github/workflows/inspect.yaml'
+      - 'littlegame/**'
+      - '.github/workflows/littlegame.yaml'
 
 jobs:
-  run-inspect-tests:
+  build-task:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,7 +20,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: run inspect tests 
+      - name: build project and image
         run: |
-          cd inspect
-          go test -v ./...
+          cd littlegame
+          make build
+
+      - name: create image and push
+        run: |
+          cd littlegame
+          make image
+          make push
