@@ -4,23 +4,23 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/mulatinho/golabs/mlt"
+	"github.com/mulatinho/golabs/mlt"
 )
 
 func TestGetManName(t *testing.T) {
 	manName := GetManName()
-	assert(t, manName != "")
+	mlt.Assert(t, manName != "")
 }
 
 func TestGetWomanName(t *testing.T) {
 	womanName := GetWomanName()
-	mlt.assert(t, womanName != "")
+	mlt.Assert(t, womanName != "")
 }
 
 func TestGenerateName(t *testing.T) {
 	fullNameOne := GenerateName(NAME_TYPE_MAN)
 	fullNameTwo := GenerateName(NAME_TYPE_WOMAN)
-	mlt.assert(t, fullNameOne != fullNameTwo)
-	mlt.assert(t, strings.Contains(fullNameOne, " "))
-	mlt.assert(t, strings.Contains(fullNameTwo, " "))
+	mlt.Assert(t, fullNameOne != fullNameTwo)
+	mlt.Assert(t, strings.Contains(fullNameOne, " "))
+	mlt.Assert(t, strings.Contains(fullNameTwo, " "))
 }

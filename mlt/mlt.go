@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+// Mulato Library of Tests is a package with helper functions to Testing module
 package mlt
 
 import (
@@ -26,12 +28,12 @@ import (
 	"testing"
 )
 
-// assert tests an exp expression and returns error if not true
+// Assert tests an exp expression and returns error if not true
 //
 // Parameters:
 //   - t: the
 //   - exp: expression to be tested
-func assert(t *testing.T, expression bool) {
+func Assert(t *testing.T, expression bool) {
 	_, file, line, _ := runtime.Caller(1)
 
 	if !expression {
@@ -46,7 +48,7 @@ func assert(t *testing.T, expression bool) {
 //   - t: the
 //   - a: first item to be tested
 //   - b: second item to be tested
-func equals(t *testing.T, a, b any) {
+func Equals(t *testing.T, a, b any) {
 	_, file, line, _ := runtime.Caller(1)
 
 	if !reflect.DeepEqual(a, b) {
@@ -61,7 +63,7 @@ func equals(t *testing.T, a, b any) {
 //   - t: the
 //   - a: first item to be tested
 //   - b: second item to be tested
-func stringEquals(t *testing.T, a, b string) {
+func StringEquals(t *testing.T, a, b string) {
 	_, file, line, _ := runtime.Caller(1)
 
 	if a != b {
