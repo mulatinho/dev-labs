@@ -1,4 +1,4 @@
-*
+/*
  * The inspect testing library.
  *
  * Copyright (C) 2024 Alexandre Mulatinho <alex@mulatinho.net>
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package inspect
 
 import (
@@ -32,10 +31,10 @@ import (
 // Parameters:
 //   - t: the
 //   - exp: expression to be tested
-func assert(t *testing.T, exp bool) {
+func assert(t *testing.T, expression bool) {
 	_, file, line, _ := runtime.Caller(1)
 
-	if !exp {
+	if !expression {
 		fmt.Printf("\033[1massert failed!\033[0m %s:%d\n", filepath.Base(file), line)
 		t.FailNow()
 	}
@@ -51,7 +50,22 @@ func equals(t *testing.T, a, b any) {
 	_, file, line, _ := runtime.Caller(1)
 
 	if !reflect.DeepEqual(a, b) {
-		fmt.Printf("\033[1equals failed!\033[0m %s:%d\n", filepath.Base(file), line)
+		fmt.Printf("\033[1mequals failed!\033[0m %s:%d (%v != %v)\n", filepath.Base(file), line, a, b)
+		t.FailNow()
+	}
+}
+
+// equals test if a is deep equal to b, returns error if not true
+//
+// Parameters:
+//   - t: the
+//   - a: first item to be tested
+//   - b: second item to be tested
+func stringEquals(t *testing.T, a, b string) {
+	_, file, line, _ := runtime.Caller(1)
+
+	if a != b {
+		fmt.Printf("\033[1mstringEquals failed!\033[0m %s:%d (%v != %v)\n", filepath.Base(file), line, a, b)
 		t.FailNow()
 	}
 }
