@@ -37,6 +37,7 @@ func (l *Level) NewScene(name string, difficult SceneDifficult) {
 		Name:        name,
 		Difficult:   difficult,
 		Turns:       []*Turn{},
+		SceneTurn:   &Turn{},
 		isCompleted: false,
 	}
 

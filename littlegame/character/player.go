@@ -50,7 +50,7 @@ type Player struct {
 
 func NewPlayer() *Player {
 	return &Player{
-		Id:     utils.GetPlayerID(),
+		Id:     utils.GetRandomNumber(),
 		Name:   utils.GenerateName(utils.NAME_TYPE_MAN),
 		Health: HEALTH_STATUS_NORMAL,
 		isDead: false,

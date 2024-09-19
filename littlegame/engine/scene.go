@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/mulatinho/golabs/littlegame/character"
+	"github.com/mulatinho/golabs/littlegame/utils"
 )
 
 type (
@@ -34,7 +35,7 @@ type Turn struct {
 	isCompleted bool
 	timestamp   int64
 	Players     []*character.Player
-	Villains    []*character.Villain
+	TurnOrder   []int
 }
 
 type Scene struct {
@@ -43,17 +44,20 @@ type Scene struct {
 	Name        string
 	Difficult   SceneDifficult
 	Turns       []*Turn
+	SceneTurn   *Turn
 	isCompleted bool
 }
 
 func NewScene(level int, name string) *Scene {
-	SceneId := rand.Intn(10_000) // this should get the last index of scenes
+	SceneId := utils.GetRandomNumber(10_000)
 	return &Scene{
-		Id:        SceneId,
-		LevelId:   level,
-		Name:      name,
-		Difficult: SceneDifficult(rand.Int() % int(SCENE_DIFFICULT_TOTAL)),
-		Turns:     []*Turn{},
+		Id:          SceneId,
+		LevelId:     level,
+		Name:        name,
+		Difficult:   SceneDifficult(rand.Int() % int(SCENE_DIFFICULT_TOTAL)),
+		Turns:       []*Turn{},
+		SceneTurn:   &Turn{},
+		isCompleted: false,
 	}
 }
 
@@ -62,6 +66,7 @@ func (s *Scene) GetLevel() int   { return s.LevelId }
 func (s *Scene) GetName() string { return s.Name }
 
 func (s *Scene) AddTurn(turn *Turn) {
+	s.SceneTurn = turn
 	s.Turns = append(s.Turns, turn)
 }
 
@@ -73,7 +78,7 @@ func (s *Scene) NewTurn(mode TurnMode) {
 		isCompleted: false,
 		timestamp:   time.Now().Unix(),
 		Players:     []*character.Player{},
-		Villains:    []*character.Villain{},
+		TurnOrder:   []int{},
 	}
 
 	s.AddTurn(newTurn)
@@ -89,4 +94,42 @@ func (s *Scene) DeleteTurnById(turnId int) bool {
 	}
 
 	return turnFound
+}
+
+func NewTurn(mode TurnMode) *Turn {
+	return &Turn{
+		Id:          -1,
+		SceneId:     -1,
+		Mode:        mode,
+		isCompleted: false,
+		timestamp:   time.Now().Unix(),
+		Players:     []*character.Player{},
+	}
+}
+
+func (t *Turn) SetId(id int)           { t.Id = id }
+func (t *Turn) SetSceneId(sceneId int) { t.SceneId = sceneId }
+
+func (t *Turn) AddPlayer(player *character.Player) {
+	t.Players = append(t.Players, player)
+}
+
+func (t *Turn) DeletePlayerById(playerId int) bool {
+	playerFound := false
+	for i, player := range t.Players {
+		if player.Id == playerId {
+			t.Players = append(t.Players[:i], t.Players[i+1:]...)
+			playerFound = true
+		}
+	}
+
+	return playerFound
+}
+
+func (t *Turn) ApplyRandomOrder() {
+	t.TurnOrder = utils.ApplyRandomIndexesToArray(len(t.Players))
+}
+
+func (t *Turn) ApplyRandomOrderPreBuilt(prebuilt []int) {
+	t.TurnOrder = utils.ApplyRandomIndexesToArrayPreBuilt(len(t.Players), prebuilt)
 }

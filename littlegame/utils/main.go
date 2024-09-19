@@ -7,9 +7,14 @@ import (
 	"path/filepath"
 	"runtime"
 	"time"
+
+	"golang.org/x/exp/slices"
 )
 
-type NAME_TYPE int
+type (
+	NAME_TYPE int
+	LogType   int
+)
 
 const (
 	NAME_TYPE_MAN NAME_TYPE = iota
@@ -17,10 +22,21 @@ const (
 	NAME_TYPE_TOTAL
 )
 
-func GetPlayerID() int {
-	rand.Seed(time.Now().UnixMicro())
+const (
+	LOG_TYPE_NORMAL LogType = iota
+	LOG_TYPE_DEBUG
+	LOG_TYPE_PANIC
+)
 
-	return rand.Int() % 20
+func GetRandomNumber(n ...int) int {
+	var result int
+	r := rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
+	if len(n) == 0 {
+		result = r.Int() % 10_000
+	} else {
+		result = r.Int() % n[0]
+	}
+	return result
 }
 
 func GetManName() string {
@@ -31,7 +47,8 @@ func GetManName() string {
 		"Reggie", "Albert", "Joseph", "Lane", "Joey", "Verne",
 	}
 
-	return NamesList[rand.Int()%len(NamesList)]
+	index := GetRandomNumber(len(NamesList))
+	return NamesList[index]
 }
 
 func GetWomanName() string {
@@ -42,7 +59,8 @@ func GetWomanName() string {
 		"Leandra", "Simone", "Lily", "Marya", "Shayla",
 	}
 
-	return NamesList[rand.Int()%len(NamesList)]
+	index := GetRandomNumber(len(NamesList))
+	return NamesList[index]
 }
 
 func GetSurname() string {
@@ -63,7 +81,8 @@ func GetSurname() string {
 		"Walsh", "Warner", "House", "May", "Vasquez", "Ward", "Hopper", "Landry", "Combs",
 	}
 
-	return NamesList[rand.Int()%len(NamesList)]
+	index := GetRandomNumber(len(NamesList))
+	return NamesList[index]
 }
 
 func GenerateName(name_type NAME_TYPE) string {
@@ -81,29 +100,60 @@ func GenerateName(name_type NAME_TYPE) string {
 	return newName
 }
 
-type LogType int
-
-const (
-	LOG_TYPE_NORMAL LogType = iota
-	LOG_TYPE_DEBUG
-	LOG_TYPE_PANIC
-)
-
-func LogMessage(logType LogType, message any) {
+func LogMessage(logType LogType, message ...any) {
 	_, fileName, lineNumber, _ := runtime.Caller(1)
 	displayLogEnabled := bool(os.Getenv("DEBUG") != "")
 
 	switch logType {
 	case LOG_TYPE_PANIC:
-		fmt.Printf(":. \033[1m PANIC %s:%d\033[m %#v\n", filepath.Base(fileName), lineNumber, message)
+		fmt.Printf(":. \033[1m PANIC %s:%d\033[m ", filepath.Base(fileName), lineNumber)
+		fmt.Printf("%#v\n", message...)
 		os.Exit(1)
 	case LOG_TYPE_DEBUG:
 		if displayLogEnabled {
-			fmt.Printf(":. \033[1m DEBUG %s:%d\033[m %#v\n", filepath.Base(fileName), lineNumber, message)
+			fmt.Printf(":. \033[1m DEBUG %s:%d\033[m ", filepath.Base(fileName), lineNumber)
+			fmt.Printf("%#v\n", message...)
+			//fmt.Printf(":. \033[1m DEBUG %s:%d\033[m %#v\n", filepath.Base(fileName), lineNumber, message)
 		}
 	default:
 		if displayLogEnabled {
-			fmt.Printf(":. \033[1mNORMAL\033[m %v\n", message)
+			fmt.Printf(":. \033[1mNORMAL %s:%d\033[m ", filepath.Base(fileName), lineNumber)
+			fmt.Printf("%#v\n", message...)
+			//fmt.Printf(":. \033[1mNORMAL\033[m %v\n", message...)
 		}
 	}
+}
+
+func ApplyRandomIndexesToArray(totalLen int) []int {
+	var arrayResult []int
+
+	for index := 0; index < totalLen; index++ {
+		for {
+			chosen := GetRandomNumber(totalLen)
+			if !slices.Contains(arrayResult, chosen) {
+				arrayResult = append(arrayResult, chosen)
+				break
+			}
+		}
+	}
+
+	return arrayResult
+}
+
+func ApplyRandomIndexesToArrayPreBuilt(totalLen int, prebuilt []int) []int {
+	var arrayResult []int
+
+	arrayResult = append(arrayResult, prebuilt...)
+
+	for index := len(prebuilt); index < totalLen; index++ {
+		for {
+			chosen := GetRandomNumber(totalLen)
+			if !slices.Contains(arrayResult, chosen) {
+				arrayResult = append(arrayResult, chosen)
+				break
+			}
+		}
+	}
+
+	return arrayResult
 }
