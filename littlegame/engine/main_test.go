@@ -26,14 +26,11 @@ func TestGameLoop(t *testing.T) {
 	levelOne.Scenes[0].Turns[0].AddPlayer(playerOne)
 	levelOne.Scenes[0].Turns[0].AddPlayer(playerTwo)
 
-	utils.LogMessage(utils.LOG_TYPE_DEBUG, "ALLGOOD")
-
 	levelTwo.Scenes[1].NewTurn(TURN_MODE_COMBAT)
 	levelTwo.Scenes[1].Turns[0].AddPlayer(playerOne)
 	levelTwo.Scenes[1].Turns[0].AddPlayer(playerTwo)
 	levelTwo.Scenes[1].Turns[0].AddPlayer(playerThree)
 	levelTwo.Scenes[1].Turns[0].AddPlayer(playerFour)
-	utils.LogMessage(utils.LOG_TYPE_DEBUG, "ALLGOOD2")
 
 	levels := []*Level{levelOne, levelTwo}
 	gameParams := &GameLoopParameters{
