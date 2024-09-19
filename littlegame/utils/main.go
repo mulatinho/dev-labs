@@ -3,6 +3,9 @@ package utils
 import (
 	"fmt"
 	"math/rand"
+	"os"
+	"path/filepath"
+	"runtime"
 	"time"
 )
 
@@ -76,4 +79,31 @@ func GenerateName(name_type NAME_TYPE) string {
 	}
 
 	return newName
+}
+
+type LogType int
+
+const (
+	LOG_TYPE_NORMAL LogType = iota
+	LOG_TYPE_DEBUG
+	LOG_TYPE_PANIC
+)
+
+func LogMessage(logType LogType, message any) {
+	_, fileName, lineNumber, _ := runtime.Caller(1)
+	displayLogEnabled := bool(os.Getenv("DEBUG") != "")
+
+	switch logType {
+	case LOG_TYPE_PANIC:
+		fmt.Printf(":. \033[1m PANIC %s:%d\033[m %#v\n", filepath.Base(fileName), lineNumber, message)
+		os.Exit(1)
+	case LOG_TYPE_DEBUG:
+		if displayLogEnabled {
+			fmt.Printf(":. \033[1m DEBUG %s:%d\033[m %#v\n", filepath.Base(fileName), lineNumber, message)
+		}
+	default:
+		if displayLogEnabled {
+			fmt.Printf(":. \033[1mNORMAL\033[m %v\n", message)
+		}
+	}
 }
