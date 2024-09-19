@@ -1,9 +1,6 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/mulatinho/golabs/littlegame/character"
 	"github.com/mulatinho/golabs/littlegame/engine"
 )
 
@@ -13,8 +10,14 @@ const (
 )
 
 func main() {
-	player := character.CreateNewPlayer()
+	levelOne := engine.NewLevel(1, "The Beginning")
+	levelTwo := engine.NewLevel(2, "The Combat")
 
-	fmt.Printf("HELLO %v\n", player)
-	engine.GameLoop()
+	levelOne.NewScene("Scene 01", engine.SCENE_DIFFICULT_EASY)
+	levelTwo.NewScene("Scene 02", engine.SCENE_DIFFICULT_EASY)
+	levelTwo.NewScene("Scene 03", engine.SCENE_DIFFICULT_MEDIUM)
+	levelTwo.NewScene("Scene 04", engine.SCENE_DIFFICULT_HARD)
+
+	levels := []engine.Level{*levelOne, *levelTwo}
+	engine.GameLoop(levels)
 }

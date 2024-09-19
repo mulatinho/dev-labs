@@ -1,2 +1,4 @@
 github.com/mulatinho/golabs/mlt v0.0.0-20240918133338-1b01ede4a551 h1:S5N3b/94i6G263b4zrYDPm3j+iQbFNn6+RsQXdU6SeY=
 github.com/mulatinho/golabs/mlt v0.0.0-20240918133338-1b01ede4a551/go.mod h1:iD5U3ecWdgVkuUE8UTTcBYKyMgwwURmAc1/GJfwK610=
+github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
+github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
