@@ -3,6 +3,8 @@ package engine
 import (
 	"testing"
 
+	"github.com/mulatinho/golabs/littlegame/character"
+	"github.com/mulatinho/golabs/littlegame/utils"
 	"github.com/mulatinho/golabs/mlt"
 )
 
@@ -32,4 +34,37 @@ func TestScene(t *testing.T) {
 	newScene.NewTurn(TURN_MODE_COMBAT)
 
 	mlt.Equals(t, len(newScene.Turns), 2)
+}
+
+func TestTurnOrder(t *testing.T) {
+	level := NewLevel(levelId, "The Level One")
+	playerOne := character.NewPlayer()
+	playerTwo := character.NewPlayer()
+	playerThree := character.NewPlayer()
+	playerFour := character.NewPlayer()
+
+	turnOne := NewTurn(TURN_MODE_SINGLE_CHALLENGE)
+	turnTwo := NewTurn(TURN_MODE_COMBAT)
+
+	level.AddScene(newScene)
+
+	turnOne.AddPlayer(playerOne)
+	turnOne.AddPlayer(playerTwo)
+
+	turnTwo.AddPlayer(playerOne)
+	turnTwo.AddPlayer(playerTwo)
+	turnTwo.AddPlayer(playerThree)
+	turnTwo.AddPlayer(playerFour)
+
+	newScene.AddTurn(turnOne)
+	newScene.AddTurn(turnTwo)
+
+	turnOne.ApplyRandomOrder()
+	turnTwo.ApplyRandomOrderPreBuilt([]int{1})
+
+	mlt.Equals(t, len(turnOne.Players), 2)
+	mlt.Equals(t, len(turnTwo.Players), 4)
+
+	utils.LogMessage(utils.LOG_TYPE_DEBUG, turnOne)
+	utils.LogMessage(utils.LOG_TYPE_DEBUG, turnTwo)
 }
