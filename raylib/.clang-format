@@ -3,3 +3,22 @@ TabWidth: 8
 IndentWidth: 8
 ContinuationIndentWidth: 8
 ColumnLimit: 80
+DeclarationAfterStatement: Never
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterStruct: false
+  AfterClass: false
+  AfterNamespace: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
+
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: Always
+BinPackParameters: false
+BinPackArguments: false
+

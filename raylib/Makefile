@@ -16,13 +16,18 @@ push-image:
 	docker push mulatinho/main:latest
 
 main:
+	gcc $(CFLAGS) -o src/main src/main.c $(LDLIBS)
+	gcc $(CFLAGS) -o src/3d src/3d.c $(LDLIBS)
 	gcc $(CFLAGS) -o src/raylib01 src/raylib01.c $(LDLIBS)
 	gcc $(CFLAGS) -o src/raylib02 src/raylib02.c $(LDLIBS)
 	gcc $(CFLAGS) -o src/raylib03 src/raylib03.c $(LDLIBS)
 
 main-debug:
+	gcc $(TEST_CFLAGS) -o src/main src/main.c $(LDLIBS)
+	gcc $(TEST_CFLAGS) -o src/3d src/3d.c $(LDLIBS)
 	gcc $(TEST_CFLAGS) -o src/raylib01 src/raylib01.c $(LDLIBS)
 	gcc $(TEST_CFLAGS) -o src/raylib02 src/raylib02.c $(LDLIBS)
+	gcc $(TEST_CFLAGS) -o src/raylib03 src/raylib03.c $(LDLIBS)
 
 test:
 	gcc $(TEST_CFLAGS) -o src/raylib02 src/raylib02.c $(LDLIBS)

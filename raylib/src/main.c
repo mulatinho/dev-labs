@@ -1,67 +1,85 @@
 #include "raylib.h"
-#include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 
+#define TILE_WIDTH 64
+#define TILE_HEIGHT 32
+#define MAP_WIDTH 32
+#define MAP_HEIGHT 32
+
 typedef struct {
-	int screenWidth;
-	int screenHeight;
-	Texture2D tileset_jungle;
-	Texture2D tileset_keyboard;
-} mlt_window_t;
+    int x, y;
+} Player;
 
-mlt_window_t win;
-
-void handle_input(void) 
-{
-	if (IsKeyPressed(KEY_Q)) {
-		UnloadTexture(win.tileset);
-		CloseWindow();
-		exit(EXIT_SUCCESS);
-	} else
-		fprintf(stdout, "q is not pressed\n");
+// Converts grid position to screen position in isometric
+Vector2 GridToScreen(int x, int y) {
+    return (Vector2){
+        (x - y) * TILE_WIDTH / 2 + 800 / 2,  // X center offset
+        (x + y) * TILE_HEIGHT / 2 + 50       // Y offset
+    };
 }
 
-void update_vector_xy(int *x, int *y)
-{
-	*x = (*x + 64) % 640;
-	*y = (*y + 64) % 512;
-}
+int main(void) {
+    InitWindow(1024, 1024, "Isometric Map with Tileset");
+    SetTargetFPS(60);
 
-void update_vector_txy(int *x, int *y)
-{
-	*x = *x % 196 ? 0 : *x + 64;
-	*y = *y % 128 ? 0 : *y + 64; 
-}
-int main(void)
-{
-	win.screenWidth = 800;
-	win.screenHeight = 600;
+    // Load textures
+    Texture2D tileset = LoadTexture("assets/tile-beach-sand-sm.png");
+    Texture2D character = LoadTexture("assets/castaway-man.png");
 
-	InitWindow(win.screenWidth, win.screenHeight, "Raylib Tileset Example");
-	win.tileset_jungle = LoadTexture("assets/tile_jungle_plants_objects.png");
+    // Define tileset info
+    int tile_count = 2;
+    Rectangle tileRects[2];
+    for (int i = 0; i < tile_count; i++) {
+        tileRects[i] = (Rectangle){ 0, 0, TILE_WIDTH, TILE_HEIGHT };
+    }
 
+    // Generate map
+    int map[MAP_HEIGHT][MAP_WIDTH];
+    srand(time(NULL));
+    for (int y = 0; y < MAP_HEIGHT; y++) {
+        for (int x = 0; x < MAP_WIDTH; x++) {
+            map[y][x] = rand() % tile_count; // Random tile 0-3
+        }
+    }
 
-	SetTargetFPS(60);
+    Player player = {16, 16};
 
-	int xt = 0, yt = 0, x = 0, y = 0;
-	while (!WindowShouldClose()) {
-		handle_input();
-		BeginDrawing();
-		ClearBackground(BLANK);
+    while (!WindowShouldClose()) {
+        // Input
+        if (IsKeyPressed(KEY_RIGHT)) player.x++;
+        if (IsKeyPressed(KEY_LEFT))  player.x--;
+        if (IsKeyPressed(KEY_DOWN))  player.y++;
+        if (IsKeyPressed(KEY_UP))    player.y--;
+        if (IsKeyPressed(KEY_Q))     goto cleanup;
 
-		Rectangle src = {xt, yt, 64, 64};
-		Vector2 dest = {x, y};
+        BeginDrawing();
+        ClearBackground(WHITE);
 
-		DrawTextureRec(win.tileset_jungle, src, dest, WHITE);
+        // Draw tilemap
+        for (int y = 0; y < MAP_HEIGHT; y++) {
+            for (int x = 0; x < MAP_WIDTH; x++) {
+                int tileId = map[y][x];
+                Vector2 pos = GridToScreen(x, y);
+                DrawTextureRec(tileset, tileRects[tileId], pos, WHITE);
+            }
+        }
 
-		EndDrawing();
-		update_vector_xy(&x, &y);
-		update_vector_txy(&xt, &yt);
-		fprintf(stdout, "xt: %d, yt: %d\n", xt, yt);
-		usleep(150 * 1000);
-	}
+        // Draw player sprite
+        Vector2 playerPos = GridToScreen(player.x, player.y);
+   	DrawTextureV(character, (Vector2){ playerPos.x - 16, playerPos.y - 48 }, WHITE);
+	//DrawPoly((Vector2){playerPos.x, playerPos.y}, 4, TILE_WIDTH / 2, 45.0f, RED);
 
-	return 0;
+        DrawText("Use arrow keys to move", 10, 10, 20, RAYWHITE);
+        EndDrawing();
+
+	usleep(4500);
+    }
+
+cleanup:
+    UnloadTexture(tileset);
+    UnloadTexture(character);
+    CloseWindow();
+    return 0;
 }
