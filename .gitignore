@@ -2,3 +2,6 @@ pkg/
 bin/
 *.db
 *.swp
+raylib/assets
+raylib/src/main*
+raylib/src/raylib[0-9][0-9]

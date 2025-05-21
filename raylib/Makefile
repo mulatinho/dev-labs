@@ -6,7 +6,7 @@ LDLIBS=-lraylib -lm -ldl -lpthread -lGL -lrt -lX11
 all: main 
 
 clean:
-	rm -fv src/*~ src/*.o src/*.swp src/raylib0[0-9]
+	rm -fv src/*~ src/*.o src/*.swp src/raylib0[0-9] src/3d src/main
 	rm -fv tests/*~ tests/*.o tests/*.swp tests/*_test
 
 image:
