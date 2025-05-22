@@ -3,22 +3,30 @@
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <limits.h>
+#include <sys/stat.h>
 
 #define M_BAT_BOLD   "\033[1m"
 #define M_BAT_CLEAR  "\033[m"
 #define M_BAT_RED    "\033[41;5m"
 #define M_BAT_YELLOW "\033[43;5m"
 #define M_BAT_GREEN  "\033[42;5m"
+#define M_BAT_SCREEN "\033[2J\033[H"
 
 #define M_BAT_SEP    "|"
-#define M_BAT_LINE   "  -  -  -  -  -  "
+#define M_BAT_LINE   "  -  -  -  -  -  - "
 #define M_BAT_INIT   " _________________ "
 #define M_BAT_END    " ''''''''''''''''' "
+#define M_BAT_BLANK  "                   "
 
 const char *read_data(char *filename)
 {
 	FILE *fp;
 	char buffer[NAME_MAX] = {0};
+	struct stat st;
+
+	if (stat(filename, &st) == -1)
+		return NULL;
 
 	if (!(fp = fopen(filename, "r")))
 		return NULL;
@@ -36,7 +44,7 @@ static void update_screen(const char *model_name, const int capacity)
 
 	int level = 100;
 
-	printf(
+	printf(M_BAT_SCREEN 
 	  M_BAT_BOLD  " Battery Monitor " M_BAT_CLEAR "\n"
 	  M_BAT_BOLD  " Model: " M_BAT_CLEAR "%s" M_BAT_CLEAR
 	  M_BAT_BOLD  " Current Capacity: %2d%" M_BAT_CLEAR "\n",
@@ -57,7 +65,7 @@ static void update_screen(const char *model_name, const int capacity)
 		else if (level < 30 && print_color)
 	  		printf(M_BAT_CLEAR M_BAT_SEP M_BAT_RED    M_BAT_LINE M_BAT_CLEAR "|\n");
 		else
-	      		printf(M_BAT_CLEAR M_BAT_SEP M_BAT_CLEAR    "                 " M_BAT_CLEAR "|\n");
+	      	printf(M_BAT_CLEAR M_BAT_SEP M_BAT_CLEAR  M_BAT_BLANK M_BAT_CLEAR "|\n");
 	}
 
 	printf(M_BAT_CLEAR M_BAT_END M_BAT_CLEAR "\n");
