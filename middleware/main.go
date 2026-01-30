@@ -57,7 +57,7 @@ func middleware(handle http.HandlerFunc) http.HandlerFunc {
 }
 
 func HandleHome(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(201)
+	w.WriteHeader(200)
 	fmt.Fprintf(w, `{"message": "Hello, World to Home!"}`)
 }
 
